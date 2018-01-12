@@ -1,6 +1,6 @@
 
 stage('Build Docker') {
-    steps {
+    node('slave') {
         echo 'Building docker image'
     }
 }
