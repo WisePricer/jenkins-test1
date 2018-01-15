@@ -8,7 +8,6 @@ pipeline {
     }
     stage('Parallel Testing') {
       parallel {
-        failFast true
         stage('Test 1') {
           agent { label 'slave'}
           steps { echo 'Test 1'}
