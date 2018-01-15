@@ -1,22 +1,37 @@
-
-stage('Build Docker') {
-    node('slave') {
-        echo 'Building docker image'
+pipeline {
+  agent { node { label 'slave' } }
+  stages {
+    stage('Build') {
+      steps {
+        echo 'Build'
+      }
     }
-}
-milestone 1
-stage('Deploy One'){
-    node('slave') {
-        echo 'Deploying to one'
+    stage('Parallel Testing') {
+      parallel {
+        failFast true
+        stage('Test 1') {
+          agent { label 'slave'}
+          steps { echo 'Test 1'}
+        }
+        stage('Test 2') {
+          agent { label 'slave'}
+          steps { echo 'Test 2'}
+        }
+        stage('Test 3') {
+          agent { label 'slave'}
+          steps { echo 'Test 3'}
+        }
+      }
     }
-}
-stage('Deploy Test') {
-    node('slave') {
-        echo 'Deploying to test'
+    stage('Deploy') {
+      steps {
+        echo 'Deploy'
+      }
     }
-}
-stage('Deploy Prod') {
-    node('slave') {
-        echo 'Deploying to prod'
+  }
+  post {
+    always {
+      echo 'Done'
     }
+  }
 }
